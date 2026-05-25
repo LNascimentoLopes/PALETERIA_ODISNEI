@@ -14,14 +14,13 @@ import Texto from "../../componentes/Texto";
 const VideoViewComponent = VideoView as React.ComponentType<VideoViewProps>;
 
 export default function Home() {
-  const player = useVideoPlayer(
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    const player = useVideoPlayer(
+    require("../../../assets/tour.mp4"),
     (player) => {
       player.loop = true;
-      player.play();
-    }
+      player.muted = true;
+    },
   );
-
   const servicos = [
     { icone: "🏕️", titulo: "Atendimento Nômade", desc: "Personalizado e acolhedor" },
     { icone: "🔥", titulo: "Degustação Mongol", desc: "Ao redor da fogueira" },
