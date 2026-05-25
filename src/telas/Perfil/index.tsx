@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Card } from "react-native-paper";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Texto from "../../componentes/Texto";
@@ -21,13 +21,11 @@ export default function Perfil() {
   const [facing, setFacing] = useState<CameraType>("front");
   const [permission, requestPermission] = useCameraPermissions();
 
-  // Form fields
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [mostrarCamera, setMostrarCamera] = useState(false);
 
-  // Load saved profile on mount
   useEffect(() => {
     async function carregarPerfil() {
       const perfilSalvo = await AsyncStorage.getItem("PerfilCliente");
@@ -41,17 +39,14 @@ export default function Perfil() {
     carregarPerfil();
   }, []);
 
-  // Camera still loading
   if (!permission) {
     return <View />;
   }
 
-  // Toggle camera front/back
   function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
-  // Save profile to AsyncStorage
   async function salvarPerfil() {
     if (!nome.trim()) {
       Alert.alert("Atenção", "Por favor, informe seu nome completo.");
@@ -70,28 +65,45 @@ export default function Perfil() {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <StatusBar barStyle="light-content" backgroundColor="#2A4F3D" />
+      <StatusBar barStyle="light-content" backgroundColor="#B8313A" />
 
       <ScrollView
         style={estilos.fundo}
         contentContainerStyle={estilos.scrollConteudo}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
-        <View style={estilos.header}>
-          <Texto style={estilos.headerTitulo}>Perfil do Cliente</Texto>
-          <Texto style={estilos.headerSubtitulo}>
-            Gerencie suas informações pessoais
-          </Texto>
+        {/* ── Hero Header ── */}
+        <View style={estilos.hero}>
+          <View style={estilos.heroStripe} />
+          <View style={estilos.heroContent}>
+            <View style={estilos.heroBadge}>
+              <Texto style={estilos.heroBadgeTexto}>— Minha Conta —</Texto>
+            </View>
+            <Texto style={estilos.heroTitulo}>Perfil do{"\n"}Cliente</Texto>
+            <View style={estilos.heroDivider}>
+              <View style={estilos.heroDividerLine} />
+              <Texto style={estilos.heroDividerIcon}>✦</Texto>
+              <View style={estilos.heroDividerLine} />
+            </View>
+            <Texto style={estilos.heroSubtitulo}>
+              Gerencie suas informações pessoais
+            </Texto>
+          </View>
+          <View style={estilos.heroWave} />
         </View>
 
-        {/* Camera Section */}
-        <View style={estilos.secaoCamera}>
-          <Texto style={estilos.labelCamera}>Foto de Perfil</Texto>
+        {/* ── Seção Câmera ── */}
+        <View style={estilos.secao}>
+          <View style={estilos.cabecalhoSecao}>
+            <Texto style={estilos.labelSecao}>— Identidade Visual —</Texto>
+            <Texto style={estilos.tituloSecao}>Foto de Perfil</Texto>
+          </View>
 
           {!permission.granted ? (
             <View style={estilos.permissaoContainer}>
-              <Ionicons name="camera-outline" size={48} color="#8B6B4D" />
+              <View style={estilos.permissaoIconeCirculo}>
+                <Ionicons name="camera-outline" size={36} color="#B8313A" />
+              </View>
               <Texto style={estilos.textoPermissao}>
                 Precisamos da sua autorização para acessar a câmera
               </Texto>
@@ -99,8 +111,9 @@ export default function Perfil() {
                 style={estilos.botaoPermissao}
                 onPress={requestPermission}
               >
+                <Ionicons name="camera" size={16} color="#FDF8F0" />
                 <Texto style={estilos.textoBotaoPermissao}>
-                  Permitir Acesso
+                  {" "}Permitir Acesso
                 </Texto>
               </TouchableOpacity>
             </View>
@@ -112,7 +125,7 @@ export default function Perfil() {
                     style={estilos.botaoVirarCamera}
                     onPress={toggleCameraFacing}
                   >
-                    <Ionicons name="camera-reverse" size={28} color="white" />
+                    <Ionicons name="camera-reverse" size={26} color="white" />
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={estilos.botaoFecharCamera}
@@ -128,82 +141,99 @@ export default function Perfil() {
               style={estilos.botaoAbrirCamera}
               onPress={() => setMostrarCamera(true)}
             >
-              <Ionicons name="camera" size={40} color="#d64550" />
+              <View style={estilos.cameraIconeCirculo}>
+                <Ionicons name="camera" size={32} color="#B8313A" />
+              </View>
               <Texto style={estilos.textoAbrirCamera}>
-                Toque para tirar sua foto de perfil
+                Toque para tirar sua foto
+              </Texto>
+              <Texto style={estilos.textoAbrirCameraHint}>
+                Frente ou verso da câmera
               </Texto>
             </TouchableOpacity>
           )}
         </View>
 
-        {/* Profile Form Card */}
-        <Card mode="elevated" style={estilos.card}>
-          <Card.Content>
-            <Texto style={estilos.cardTitulo}>Dados Pessoais</Texto>
+        {/* ── Divisor ── */}
+        <View style={estilos.divisorFaixa}>
+          <Texto style={estilos.divisorTexto}>✦  ✦  ✦</Texto>
+        </View>
 
-            {/* Nome Completo */}
+        {/* ── Formulário ── */}
+        <View style={estilos.secao}>
+          <View style={estilos.cabecalhoSecao}>
+            <Texto style={estilos.labelSecao}>— Suas Informações —</Texto>
+            <Texto style={estilos.tituloSecao}>Dados Pessoais</Texto>
+          </View>
+
+          <View style={estilos.formCard}>
+            {/* Nome */}
             <View style={estilos.campoContainer}>
               <View style={estilos.labelContainer}>
-                <Ionicons name="person-outline" size={18} color="#d64550" />
-                <Texto style={estilos.label}> Nome Completo *</Texto>
+                <Ionicons name="person-outline" size={15} color="#B8313A" />
+                <Texto style={estilos.label}>  Nome Completo</Texto>
+                <Texto style={estilos.labelObrigatorio}> *</Texto>
               </View>
               <TextInput
                 style={estilos.input}
                 value={nome}
                 onChangeText={setNome}
                 placeholder="Digite seu nome completo"
-                placeholderTextColor="#BFA88A"
+                placeholderTextColor="#C4A882"
               />
             </View>
 
             {/* E-mail */}
             <View style={estilos.campoContainer}>
               <View style={estilos.labelContainer}>
-                <Ionicons name="mail-outline" size={18} color="#d64550" />
-                <Texto style={estilos.label}> E-Mail</Texto>
+                <Ionicons name="mail-outline" size={15} color="#B8313A" />
+                <Texto style={estilos.label}>  E-mail</Texto>
               </View>
               <TextInput
                 style={estilos.input}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Digite seu e-mail"
-                placeholderTextColor="#BFA88A"
+                placeholderTextColor="#C4A882"
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
             </View>
 
             {/* WhatsApp */}
-            <View style={estilos.campoContainer}>
+            <View style={[estilos.campoContainer, { marginBottom: 0 }]}>
               <View style={estilos.labelContainer}>
-                <Ionicons name="logo-whatsapp" size={18} color="#2A4F3D" />
-                <Texto style={estilos.label}> WhatsApp</Texto>
+                <Ionicons name="logo-whatsapp" size={15} color="#25D366" />
+                <Texto style={estilos.label}>  WhatsApp</Texto>
               </View>
               <TextInput
                 style={estilos.input}
                 value={whatsapp}
                 onChangeText={setWhatsapp}
                 placeholder="(XX) XXXXX-XXXX"
-                placeholderTextColor="#BFA88A"
+                placeholderTextColor="#C4A882"
                 keyboardType="numeric"
               />
             </View>
-          </Card.Content>
+          </View>
 
-          <Card.Actions style={estilos.cardAcoes}>
-            <TouchableOpacity style={estilos.botaoSalvar} onPress={salvarPerfil}>
-              <Ionicons name="save-outline" size={18} color="#FFF0DD" />
-              <Texto style={estilos.textoBotaoSalvar}> Salvar Dados</Texto>
-            </TouchableOpacity>
-          </Card.Actions>
-        </Card>
+          {/* Botão Salvar */}
+          <TouchableOpacity style={estilos.botaoSalvar} onPress={salvarPerfil}>
+            <Ionicons name="save-outline" size={18} color="#FDF8F0" />
+            <Texto style={estilos.textoBotaoSalvar}>  Salvar Dados</Texto>
+          </TouchableOpacity>
+        </View>
 
-        {/* Hotel info footer */}
-        <View style={estilos.rodape}>
-          <Texto style={estilos.rodapeTexto}>
-            Paleteria Odisnei – Mongólia
-          </Texto>
-          <Texto style={estilos.rodapeSubTexto}>
+        {/* ── Footer ── */}
+        <View style={estilos.footer}>
+          <View style={estilos.footerTopo}>
+            <View style={estilos.footerDividerLine} />
+            <Texto style={estilos.footerDividerIcon}>✦</Texto>
+            <View style={estilos.footerDividerLine} />
+          </View>
+          <Texto style={estilos.footerTitulo}>Paleteria Odisnei</Texto>
+          <Texto style={estilos.footerSubtexto}>Mongólia</Texto>
+          <Texto style={estilos.footerNota}>
             Seus dados são protegidos e usados apenas para o seu prazer
           </Texto>
         </View>
@@ -215,76 +245,149 @@ export default function Perfil() {
 const estilos = StyleSheet.create({
   fundo: {
     flex: 1,
-    backgroundColor: "#FFF0DD",
+    backgroundColor: "#FDF8F0",
   },
   scrollConteudo: {
-    paddingBottom: 40,
+    paddingBottom: 0,
   },
-  header: {
-    backgroundColor: "#d64550",
-    paddingTop: 50,
-    paddingBottom: 24,
-    paddingHorizontal: 20,
+
+  /* ─── Hero ─── */
+  hero: {
+    backgroundColor: "#B8313A",
+    overflow: "hidden",
+  },
+  heroStripe: {
+    height: 6,
+    backgroundColor: "#E2C7A0",
+  },
+  heroContent: {
     alignItems: "center",
+    paddingTop: 52,
+    paddingBottom: 40,
+    paddingHorizontal: 24,
   },
-  headerTitulo: {
-    fontFamily: "FonteBold",
-    fontSize: 26,
+  heroBadge: {
+    borderWidth: 1.5,
+    borderColor: "#E2C7A0",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
+    marginBottom: 18,
+  },
+  heroBadgeTexto: {
     color: "#E2C7A0",
-    textAlign: "center",
-    fontStyle: "italic",
-    marginBottom: 4,
+    fontSize: 11,
+    letterSpacing: 3,
   },
-  headerSubtitulo: {
-    fontSize: 14,
-    color: "#FFF0DD",
-    textAlign: "center",
-    fontStyle: "italic",
-  },
-  secaoCamera: {
-    margin: 16,
-    backgroundColor: "#FFF",
-    borderRadius: 16,
-    padding: 16,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  labelCamera: {
+  heroTitulo: {
     fontFamily: "FonteBold",
-    fontSize: 16,
-    color: "#d64550",
-    marginBottom: 12,
+    fontSize: 42,
+    color: "#FDF8F0",
+    textAlign: "center",
+    lineHeight: 48,
   },
+  heroDivider: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "55%",
+    marginVertical: 16,
+  },
+  heroDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E2C7A0",
+    opacity: 0.6,
+  },
+  heroDividerIcon: {
+    color: "#E2C7A0",
+    fontSize: 13,
+    marginHorizontal: 10,
+  },
+  heroSubtitulo: {
+    fontSize: 15,
+    color: "#F0DDBB",
+    fontStyle: "italic",
+    letterSpacing: 0.5,
+  },
+  heroWave: {
+    height: 28,
+    backgroundColor: "#FDF8F0",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+  },
+
+  /* ─── Seções ─── */
+  secao: {
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 28,
+    backgroundColor: "#FDF8F0",
+  },
+  cabecalhoSecao: {
+    alignItems: "center",
+    marginBottom: 18,
+  },
+  labelSecao: {
+    fontSize: 11,
+    color: "#B8313A",
+    letterSpacing: 3,
+    marginBottom: 6,
+    textTransform: "uppercase",
+  },
+  tituloSecao: {
+    fontFamily: "FonteBold",
+    fontSize: 28,
+    color: "#1C1A18",
+    textAlign: "center",
+  },
+
+  /* ─── Câmera ─── */
   permissaoContainer: {
     alignItems: "center",
-    padding: 20,
-    backgroundColor: "#FFF0DD",
-    borderRadius: 12,
-    gap: 12,
+    backgroundColor: "#F0E8D8",
+    borderRadius: 20,
+    padding: 28,
+    gap: 14,
+  },
+  permissaoIconeCirculo: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "#FDF8F0",
+    borderWidth: 2,
+    borderColor: "#E2C7A0",
+    justifyContent: "center",
+    alignItems: "center",
   },
   textoPermissao: {
-    color: "#1C2826",
+    color: "#2E2B27",
     fontSize: 14,
     textAlign: "center",
+    lineHeight: 22,
   },
   botaoPermissao: {
-    backgroundColor: "#d64550",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#B8313A",
     paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    marginTop: 4,
   },
   textoBotaoPermissao: {
     fontFamily: "FonteBold",
-    color: "#FFF0DD",
+    color: "#FDF8F0",
     fontSize: 14,
   },
   cameraWrapper: {
-    borderRadius: 12,
+    borderRadius: 20,
     overflow: "hidden",
-    height: 280,
+    height: 290,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 8,
   },
   camera: {
     flex: 1,
@@ -308,97 +411,155 @@ const estilos = StyleSheet.create({
   botaoAbrirCamera: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFF0DD",
-    borderRadius: 12,
-    height: 140,
+    backgroundColor: "#F0E8D8",
+    borderRadius: 20,
+    height: 160,
     gap: 10,
     borderWidth: 2,
     borderColor: "#E2C7A0",
     borderStyle: "dashed",
   },
+  cameraIconeCirculo: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FDF8F0",
+    borderWidth: 2,
+    borderColor: "#E2C7A0",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   textoAbrirCamera: {
-    color: "#d64550",
-    fontSize: 14,
-    textAlign: "center",
+    color: "#B8313A",
+    fontSize: 15,
+    fontFamily: "FonteBold",
+  },
+  textoAbrirCameraHint: {
+    color: "#9A8878",
+    fontSize: 12,
     fontStyle: "italic",
   },
-  card: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    backgroundColor: "#FFF",
-    borderRadius: 16,
-    elevation: 3,
+
+  /* ─── Divisor ─── */
+  divisorFaixa: {
+    backgroundColor: "#F0E8D8",
+    paddingVertical: 14,
+    alignItems: "center",
   },
-  cardTitulo: {
-    fontFamily: "FonteBold",
-    fontSize: 18,
-    color: "#d64550",
-    marginBottom: 16,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E2C7A0",
+  divisorTexto: {
+    color: "#B8313A",
+    fontSize: 15,
+    letterSpacing: 8,
+    opacity: 0.55,
+  },
+
+  /* ─── Formulário ─── */
+  formCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 18,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: "#EDE5D8",
   },
   campoContainer: {
-    marginBottom: 16,
+    marginBottom: 18,
   },
   labelContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 6,
+    marginBottom: 8,
   },
   label: {
-    color: "#d64550",
+    color: "#2E2B27",
+    fontSize: 13,
+    fontFamily: "FonteBold",
+    letterSpacing: 0.5,
+  },
+  labelObrigatorio: {
+    color: "#B8313A",
     fontSize: 14,
     fontFamily: "FonteBold",
   },
   input: {
-    backgroundColor: "#FFF0DD",
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#d64550",
-    fontFamily: "FonteRegular",
-    borderWidth: 1,
-    borderColor: "#E2C7A0",
-  },
-  cardAcoes: {
+    backgroundColor: "#FDF8F0",
+    borderRadius: 12,
     paddingHorizontal: 16,
-    paddingBottom: 16,
-    justifyContent: "center",
+    paddingVertical: 13,
+    fontSize: 15,
+    color: "#1C1A18",
+    fontFamily: "FonteRegular",
+    borderWidth: 1.5,
+    borderColor: "#E2C7A0",
   },
   botaoSalvar: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#d64550",
-    paddingHorizontal: 30,
-    paddingVertical: 12,
+    justifyContent: "center",
+    backgroundColor: "#B8313A",
+    paddingVertical: 16,
     borderRadius: 25,
-    gap: 6,
+    shadowColor: "#B8313A",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
   textoBotaoSalvar: {
     fontFamily: "FonteBold",
-    color: "#FFF0DD",
+    color: "#FDF8F0",
     fontSize: 16,
+    letterSpacing: 0.5,
   },
-  rodape: {
-    marginHorizontal: 16,
-    padding: 16,
-    backgroundColor: "#d64550",
-    borderRadius: 12,
+
+  /* ─── Footer ─── */
+  footer: {
+    backgroundColor: "#1C1A18",
+    paddingTop: 28,
+    paddingHorizontal: 24,
+    paddingBottom: 44,
     alignItems: "center",
-    gap: 6,
   },
-  rodapeTexto: {
-    fontFamily: "FonteBold",
+  footerTopo: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "60%",
+    marginBottom: 20,
+  },
+  footerDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E2C7A0",
+    opacity: 0.35,
+  },
+  footerDividerIcon: {
     color: "#E2C7A0",
-    fontSize: 14,
-    textAlign: "center",
+    fontSize: 13,
+    marginHorizontal: 10,
   },
-  rodapeSubTexto: {
-    color: "#FFF0DD",
-    fontSize: 12,
-    textAlign: "center",
+  footerTitulo: {
+    fontFamily: "FonteBold",
+    fontSize: 20,
+    color: "#E2C7A0",
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  footerSubtexto: {
+    fontSize: 13,
+    color: "#8A7A6A",
     fontStyle: "italic",
+    marginBottom: 14,
+  },
+  footerNota: {
+    fontSize: 12,
+    color: "#4A4038",
+    textAlign: "center",
+    lineHeight: 18,
+    maxWidth: "80%",
   },
 });

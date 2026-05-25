@@ -1,23 +1,34 @@
 import React from "react";
 import { View, FlatList, StyleSheet, StatusBar } from "react-native";
-
 import Texto from "../../componentes/Texto";
 import ItemServico from "./Item";
 
 export default function Servicos({ itens }: any) {
   return (
     <View style={estilos.fundo}>
-      <StatusBar barStyle="light-content" backgroundColor="#2A4F3D" />
+      <StatusBar barStyle="light-content" backgroundColor="#B8313A" />
 
-      {/* Header */}
-      <View style={estilos.header}>
-        <Texto style={estilos.titulo}>{itens.titulo}</Texto>
-        <Texto style={estilos.subtitulo}>
-          Clique em um serviço para ver detalhes
-        </Texto>
+      {/* ── Hero Header ── */}
+      <View style={estilos.hero}>
+        <View style={estilos.heroStripe} />
+        <View style={estilos.heroContent}>
+          <View style={estilos.heroBadge}>
+            <Texto style={estilos.heroBadgeTexto}>— Cardápio —</Texto>
+          </View>
+          <Texto style={estilos.heroTitulo}>{itens.titulo}</Texto>
+          <View style={estilos.heroDivider}>
+            <View style={estilos.heroDividerLine} />
+            <Texto style={estilos.heroDividerIcon}>✦</Texto>
+            <View style={estilos.heroDividerLine} />
+          </View>
+          <Texto style={estilos.heroSubtitulo}>
+            Clique em um serviço para ver detalhes
+          </Texto>
+        </View>
+        <View style={estilos.heroWave} />
       </View>
 
-      {/* Services List */}
+      {/* ── Lista de Serviços ── */}
       <FlatList
         data={itens.lista}
         renderItem={({ item }) => <ItemServico servico={item} />}
@@ -32,31 +43,78 @@ export default function Servicos({ itens }: any) {
 const estilos = StyleSheet.create({
   fundo: {
     flex: 1,
-    backgroundColor: "#FFF0DD",
+    backgroundColor: "#FDF8F0",
   },
-  header: {
-    backgroundColor: "#d64550",
-    paddingTop: 50,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+
+  /* ─── Hero ─── */
+  hero: {
+    backgroundColor: "#B8313A",
+    overflow: "hidden",
+  },
+  heroStripe: {
+    height: 6,
+    backgroundColor: "#E2C7A0",
+  },
+  heroContent: {
     alignItems: "center",
+    paddingTop: 52,
+    paddingBottom: 40,
+    paddingHorizontal: 24,
   },
-  titulo: {
+  heroBadge: {
+    borderWidth: 1.5,
+    borderColor: "#E2C7A0",
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 5,
+    marginBottom: 18,
+  },
+  heroBadgeTexto: {
+    color: "#E2C7A0",
+    fontSize: 11,
+    letterSpacing: 3,
+  },
+  heroTitulo: {
     fontFamily: "FonteBold",
-    fontSize: 24,
-    color: "#D4AF37",
+    fontSize: 42,
+    color: "#FDF8F0",
     textAlign: "center",
-    fontStyle: "italic",
-    marginBottom: 6,
+    lineHeight: 48,
   },
-  subtitulo: {
-    fontSize: 14,
-    color: "#FFF0DD",
-    textAlign: "center",
-    fontStyle: "italic",
+  heroDivider: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "55%",
+    marginVertical: 16,
   },
+  heroDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E2C7A0",
+    opacity: 0.6,
+  },
+  heroDividerIcon: {
+    color: "#E2C7A0",
+    fontSize: 13,
+    marginHorizontal: 10,
+  },
+  heroSubtitulo: {
+    fontSize: 15,
+    color: "#F0DDBB",
+    fontStyle: "italic",
+    letterSpacing: 0.5,
+  },
+  heroWave: {
+    height: 28,
+    backgroundColor: "#FDF8F0",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+  },
+
+  /* ─── Lista ─── */
   lista: {
-    paddingTop: 20,
-    paddingBottom: 30,
+    paddingTop: 8,
+    paddingBottom: 40,
+    paddingHorizontal: 20,
   },
 });

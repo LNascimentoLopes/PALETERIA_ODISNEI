@@ -7,56 +7,72 @@ import {
   Montserrat_400Regular,
   Montserrat_700Bold,
 } from "@expo-google-fonts/montserrat";
-import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { Ionicons } from "@expo/vector-icons";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 // Screens
 import Home from "./src/telas/Home";
 import Servicos from "./src/telas/Servicos";
 import Perfil from "./src/telas/Perfil";
-
 // Mock data
 import listaServicos from "./src/mocks/servicos";
-
 import Texto from "./src/componentes/Texto";
 
-// ── Services screen receives mock data as props (same pattern as app25TA) ──
 function MenuServicos() {
   return <Servicos {...listaServicos} />;
 }
 
-// ── Bottom Tab navigator ──
 const Tab = createBottomTabNavigator();
 
 function Menu() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
+      id="MainTabs"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: any;
-
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Serviços") {
-            iconName = focused ? "ice-cream-outline" : "ice-cream-outline";
+            iconName = focused ? "ice-cream" : "ice-cream-outline";
           } else if (route.name === "Perfil") {
             iconName = focused ? "person" : "person-outline";
           }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View
+              style={
+                focused
+                  ? {
+                      backgroundColor: "#B8313A",
+                      borderRadius: 14,
+                      padding: 6,
+                      marginBottom: 2,
+                    }
+                  : { padding: 6, marginBottom: 2 }
+              }
+            >
+              <Ionicons name={iconName} size={15} color={color} />
+            </View>
+          );
         },
         tabBarActiveTintColor: "#E2C7A0",
-        tabBarInactiveTintColor: "#1C2826",
+        tabBarInactiveTintColor: "#9A8878",
         tabBarStyle: {
-          backgroundColor: "#d64550",
+          backgroundColor: "#1C1A18",
           borderTopColor: "#E2C7A0",
           borderTopWidth: 1,
-          height: 62,
-          paddingBottom: 8,
+          height: 62 + insets.bottom,
+          paddingBottom: insets.bottom + 6,
           paddingTop: 6,
         },
         tabBarLabelStyle: {
-          fontFamily: "FonteRegular",
-          fontSize: 12,
+          fontFamily: "inter_400Regular",
+          fontSize: 11,
+          letterSpacing: 0.5,
         },
         headerShown: false,
       })}
@@ -80,22 +96,21 @@ function Menu() {
   );
 }
 
-// ── Root App component ──
 export default function App() {
-  // Load Montserrat fonts as per project spec
   const [fonteCarregada] = useFonts({
     FonteRegular: Montserrat_400Regular,
     FonteBold: Montserrat_700Bold,
   });
 
-  // Wait for fonts to load before rendering
   if (!fonteCarregada) {
     return <View />;
   }
 
   return (
-    <NavigationContainer>
-      <Menu />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Menu />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

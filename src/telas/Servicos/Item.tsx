@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Modal, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 import Texto from "../../componentes/Texto";
 
@@ -25,7 +25,7 @@ export default function ItemServico({
             onPress={() => setStatusModal(true)}
           >
             <Texto style={estilos.textoBotao}>
-              <Ionicons name="information-circle" size={14} color="#FFF0DD" />{" "}
+              <Ionicons name="information-circle" size={18} color="#FFF0DD" />{" "}
               Ver Detalhes
             </Texto>
           </TouchableOpacity>
@@ -46,7 +46,7 @@ export default function ItemServico({
               style={estilos.botaoFechar}
               onPress={() => setStatusModal(false)}
             >
-              <Ionicons name="close-circle" size={30} color="#2A4F3D" />
+              <Ionicons name="close-circle" size={32} color="#2A4F3D" />
             </TouchableOpacity>
 
             <Image

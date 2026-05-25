@@ -7,7 +7,7 @@ export default function Texto({ children, style }: any) {
 
 const estilos = StyleSheet.create({
   padrao: {
-    fontFamily: "FonteRegular",
+    fontFamily: "Inter_400Regular",
     fontSize: 16,
     textAlign: "justify",
     lineHeight: 25,
