@@ -1,6 +1,6 @@
-# 🏨 Hotel Elysian Grove – App Mobile
+# 🏨 PALETERIA ODISNEI – App Mobile
 
-Aplicativo mobile em **React Native + Expo (TypeScript)** para o **Hotel Elysian Grove**.
+Aplicativo mobile em **React Native + Expo (TypeScript)** para o **PALETERIA ODISNEI**.
 
 ---
 
@@ -49,7 +49,7 @@ Pressione **`a`** para Android ou **`i`** para iOS.
 ## 📁 Estrutura de Pastas
 
 ```
-HotelElysianGrove/
+PALETERIA_ODISNEI/
 ├── assets/
 ├── src/
 │   ├── componentes/
