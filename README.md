@@ -10,7 +10,7 @@ Aplicativo mobile em **React Native + Expo (TypeScript)** para o **PALETERIA ODI
 
 ### 1. Crie o projeto base
 ```bash
-npx create-expo-app hotelElysianGrove --template blank-typescript
+npx create-expo-app PaleteriaOdisnei --template blank-typescript
 cd hotelElysianGrove
 ```
 
